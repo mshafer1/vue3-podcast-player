@@ -1,4 +1,5 @@
-<script setup lang="ts">
+<script setup>
+import Player from './components/MainPlayer.vue';
 </script>
 
 <template>
@@ -6,7 +7,7 @@
   </header>
 
   <main>
-    <!-- <ThePlayer /> -->
+    <Player />
   </main>
 </template>
 
