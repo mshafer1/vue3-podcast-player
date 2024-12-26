@@ -31,7 +31,7 @@
 
                     </div>
                 </div>
-                <div class="pb-3" v-html="episode.summaryCollapsable()"></div>
+                <div class="pb-3 border-bottom" v-html="episode.summaryCollapsable()"></div>
             </template>
         </div>
     </div>
@@ -62,7 +62,7 @@ class Episode {
 
     infoButton() {
         return `<button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#descriptionCollapse-${this.guid}"
-                aria-expanded="false" aria-controls='descriptionCollapse-${this.guid}'><i class="bi bi-info-circle-fill"></i></button>`
+                aria-expanded="false" aria-controls='descriptionCollapse-${this.guid}'>&gt;</button>`
     }
 
     summaryCollapsable() {
@@ -131,3 +131,10 @@ onMounted(() => {
     // loadEpisodes();
 });
 </script>
+
+<style lang="css">
+button.btn[aria-expanded="true"] {
+    /* transform: rotate(90deg); */
+    writing-mode:vertical-rl;
+}
+</style>
