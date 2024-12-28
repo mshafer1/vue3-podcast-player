@@ -18,8 +18,8 @@
                 <template v-for="episode in episodes" :key="episode.name">
                     <div class="row pb-1 mt-5">
                         <div class="col-sm-4">
-                            <b>{{ episode.pubDate }}</b> <br />
-                            {{ episode.name }}
+                            <b>{{ episode.name }}</b> <br />
+                            {{ episode.pubDate }}
                         </div>
                         <div class="col-sm-4">
                             {{ episode.length }}
@@ -47,7 +47,7 @@ import axios from "axios";
 import xml2js from "xml2js";
 
 class Episode {
-    constructor(name, length, link, image, summary, pubDate, guid) {
+    constructor(name, length, link, image, summary, pubDate, guid, author) {
         this.name = name;
         this.length = length;
         this.url = link;
@@ -56,8 +56,9 @@ class Episode {
         this.cover = image;
         this.pubDate = pubDate;
         this.guid = guid;
+        this.author=author;
+        
         this.theme = '#41b883'
-
         this.is_playing = false;
         // this.is_paused=false;
     }
@@ -89,7 +90,7 @@ function loadEpisodes(rss) {
         // console.log("value", parsedData.value);
         // console.log("feed", result.rss.feed)
         result.rss.channel[0].item.forEach((value) => {
-            // console.log("item: ", value)
+            console.log("item: ", value)
             var ep = new Episode(
                 value.title[0],
                 value['itunes:duration'][0],
@@ -97,7 +98,8 @@ function loadEpisodes(rss) {
                 value['itunes:image'][0]['$'].href,
                 value['itunes:summary'][0].replace("<p>", "").replace("</p>", ""),
                 value['pubDate'][0],
-                value.guid[0]["_"]
+                value.guid[0]["_"],
+                value['dc:creator'][0],
             );
             episodes.value.push(ep);
         })
