@@ -17,20 +17,21 @@
             <div class="container border">
                 <template v-for="episode in episodes" :key="episode.name">
                     <div class="row pb-1 mt-5">
+                        <div class="col-sm-1">
+                            <img :src="episode.cover" class="img-fluid" />
+                        </div>
                         <div class="col-sm-4">
                             <b>{{ episode.name }}</b> <br />
                             {{ episode.pubDate }}
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             {{ episode.length }}
                         </div>
                         <div class="col-sm-2">
                             <button class="btn btn-dark p-4 rounded-circle btn-md" :disabled="episode.is_playing"
                                 @click="play(episode)"><i class="bi" :class="episode.icon"></i></button>
                         </div>
-                        <div class="col-sm-2" v-html="episode.infoButton()">
-
-                        </div>
+                        <div class="col-sm-2" v-html="episode.infoButton()"></div>
                     </div>
                     <div class="pb-3 border-bottom" v-html="episode.summaryCollapsable()"></div>
                 </template>
