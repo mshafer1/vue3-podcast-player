@@ -13,8 +13,10 @@
                 <div class="col-sm-12 text-center">{{ episodes.length }} episodes available</div>
             </div>
             <div class="container" style="padding: 0px 0px;">
-                <EasyDataTable buttons-pagination :headers="headers" :items="episodes" hide-rows-per-page="true" body-expand-row-class-name="expanded-row"
-                    rows-per-page="10" table-class-name="customize-table" body-row-class-name="customize-rows" header-text-direction="center">
+                <div class="row">
+                    <input type="search" class="form-control" placeholder="search..." @input="updateSearch"
+                        v-model="searchText" />
+                </div>
                 <EasyDataTable buttons-pagination :headers="headers" :items="episodes" hide-rows-per-page="true"
                     body-expand-row-class-name="expanded-row" rows-per-page="10" table-class-name="customize-table"
                     body-row-class-name="customize-rows" header-text-direction="center">
@@ -55,6 +57,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import debounce from 'debounce';
 import APlayer from "@worstone/vue-aplayer";
 import axios from "axios";
 import xml2js from "xml2js";
@@ -89,6 +92,14 @@ const headers = ref([
     { text: 'Name', value: 'name' },
     { text: '', value: 'playButton' },
 ])
+const searchText = ref("")
+
+function searchTriggered() {
+    console.log("searching for", searchText.value)
+    episodes.value = episodes.value.filter((ep) => ep.name.toLowerCase().includes(searchText.value.toLowerCase()))
+}
+
+const updateSearch = debounce(searchTriggered, 300)
 
 function loadEpisodes(rss) {
     // console.log(rss.data)
