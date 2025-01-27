@@ -9,40 +9,47 @@
                 <div class="col-md-1 d-none d-md-block">&nbsp;</div>
             </div>
             <div style="min-height: 100px;">&nbsp;</div>
-            <div class="row">
-                <div class="col-sm-12 text-center">{{ episodes.length }} episodes available</div>
-            </div>
-            <div class="container" style="padding: 0px 0px;">
-                <div class="row">
-                    <input type="search" class="form-control" placeholder="search..." @input="updateSearch"
-                        v-model="searchText" />
-                </div>
-                <EasyDataTable buttons-pagination :headers="headers" :items="episodes" :hide-rows-per-page=true
-                    body-expand-row-class-name="expanded-row" :rows-per-page=10 table-class-name="customize-table"
-                    body-row-class-name="customize-rows" header-text-direction="center">
 
-                    <template #item-cover="{ cover }">
-                        <img :src="cover" class="img-fluid" style="max-width: 80px;" />
-                    </template>
-                    <template #item-name="item">
-                        <b>{{ item.name }}</b> <br />
-                        {{ item.pubDate }}
-                        <br v-if="item.expanded" />
-                        <span v-html="item.summary" v-if="item.expanded" style="padding-top: 1ex; padding-bottom: 2em;">
-                        </span>
-                    </template>
-                    <template #item-playButton="item">
-                        <div class="margin">
-                            <button class="btn btn-dark p-4 rounded-circle btn-md" :disabled="item.is_playing"
-                                @click="play(item)"><i class="bi" :class="item.icon"></i></button>
-                        </div>
-                    </template>
-                    <template #expand="item">
-                        <div>
-                            <span v-html="item.summary"></span>
-                        </div>
-                    </template>
-                </EasyDataTable>
+            <div class="container" style="padding: 0px 0px;">
+                <div class="row border border-bottom-0">
+                    <div class="col-sm-12 text-center">
+
+                        <input type="search" class="form-control" placeholder="search..." @input="updateSearch"
+                            v-model="searchText" style="border: none;" />
+                    </div>
+                </div>
+                <div class="row border border-bottom-0">
+                    <div class="col-sm-12 text-center">{{ episodes.length }} episodes available</div>
+                </div>
+                <div class="row">
+                    <EasyDataTable buttons-pagination :headers="headers" :items="episodes" :hide-rows-per-page=true
+                        body-expand-row-class-name="expanded-row" :rows-per-page=10 table-class-name="customize-table"
+                        body-row-class-name="customize-rows" header-text-direction="center">
+
+                        <template #item-cover="{ cover }">
+                            <img :src="cover" class="img-fluid" style="max-width: 80px;" />
+                        </template>
+                        <template #item-name="item">
+                            <b>{{ item.name }}</b> <br />
+                            {{ item.pubDate }}
+                            <br v-if="item.expanded" />
+                            <span v-html="item.summary" v-if="item.expanded"
+                                style="padding-top: 1ex; padding-bottom: 2em;">
+                            </span>
+                        </template>
+                        <template #item-playButton="item">
+                            <div class="margin">
+                                <button class="btn btn-dark p-4 rounded-circle btn-md" :disabled="item.is_playing"
+                                    @click="play(item)"><i class="bi" :class="item.icon"></i></button>
+                            </div>
+                        </template>
+                        <template #expand="item">
+                            <div>
+                                <span v-html="item.summary"></span>
+                            </div>
+                        </template>
+                    </EasyDataTable>
+                </div>
             </div>
         </div>
     </div>
@@ -55,7 +62,7 @@ import debounce from 'debounce';
 import APlayer from "@worstone/vue-aplayer";
 import axios from "axios";
 import xml2js from "xml2js";
-import {fuzzyFilter} from "fuzzbunny";
+import { fuzzyFilter } from "fuzzbunny";
 
 class Episode {
     constructor(name, length, link, image, summary, pubDate, guid, author) {
@@ -94,7 +101,7 @@ function searchTriggered() {
         episodes.value = allEpisodes.value
         return
     }
-    var search_result = fuzzyFilter(allEpisodes.value, searchText.value, {fields: ['name', 'summary']})
+    var search_result = fuzzyFilter(allEpisodes.value, searchText.value, { fields: ['name', 'summary'] })
     episodes.value = search_result.map((ep) => ep.item)
 }
 
