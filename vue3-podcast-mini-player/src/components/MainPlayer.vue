@@ -61,7 +61,7 @@ import debounce from 'debounce';
 import APlayer from "@worstone/vue-aplayer";
 import axios from "axios";
 import xml2js from "xml2js";
-// import { Header, Item } from "vue3-easy-data-table";
+import {fuzzyFilter} from "fuzzbunny";
 
 class Episode {
     constructor(name, length, link, image, summary, pubDate, guid, author) {
@@ -97,7 +97,13 @@ const searchText = ref("")
 
 function searchTriggered() {
     console.log("searching for", searchText.value)
-    episodes.value = allEpisodes.value.filter((ep) => ep.name.toLowerCase().includes(searchText.value.toLowerCase()))
+    if (searchText.value === "") {
+        episodes.value = allEpisodes.value
+        return
+    }
+    var search_result = fuzzyFilter(allEpisodes.value, searchText.value, {fields: ['name', 'summary']})
+    console.log("Result", search_result)
+    episodes.value = search_result.map((ep) => ep.item)
 }
 
 const updateSearch = debounce(searchTriggered, 300)
