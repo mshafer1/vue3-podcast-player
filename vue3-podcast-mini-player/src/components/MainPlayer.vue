@@ -87,6 +87,7 @@ const aplayer = ref(null);
 const audio = ref([]);
 const loaded = ref(false);
 const episodes = ref([]);
+const allEpisodes = ref([]);
 const headers = ref([
     { text: 'Episode', value: 'cover', width: 100 },
     { text: 'Name', value: 'name' },
@@ -96,7 +97,7 @@ const searchText = ref("")
 
 function searchTriggered() {
     console.log("searching for", searchText.value)
-    episodes.value = episodes.value.filter((ep) => ep.name.toLowerCase().includes(searchText.value.toLowerCase()))
+    episodes.value = allEpisodes.value.filter((ep) => ep.name.toLowerCase().includes(searchText.value.toLowerCase()))
 }
 
 const updateSearch = debounce(searchTriggered, 300)
@@ -119,14 +120,11 @@ function loadEpisodes(rss) {
                 value.guid[0]["_"],
                 value['dc:creator'][0],
             );
-            episodes.value.push(ep);
+            allEpisodes.value.push(ep);
         })
+        episodes.value = allEpisodes.value;
         loaded.value = true;
     });
-}
-
-function expand(episode) {
-    episodes.value.forEach((ep) => { ep.expanded = ep.guid === episode.guid })
 }
 
 function play(episode) {
