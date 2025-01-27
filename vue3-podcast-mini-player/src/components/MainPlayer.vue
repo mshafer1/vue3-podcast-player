@@ -22,8 +22,8 @@
                 </div>
                 <div class="row">
                     <EasyDataTable buttons-pagination :headers="headers" :items="episodes" :hide-rows-per-page=true
-                        body-expand-row-class-name="expanded-row" :rows-per-page=10 table-class-name="customize-table"
-                        body-row-class-name="customize-rows" header-text-direction="center">
+                        @click-row="playRow"
+                        >
 
                         <template #item-cover="{ cover }">
                             <img :src="cover" class="img-fluid" style="max-width: 80px;" />
@@ -125,6 +125,21 @@ function loadEpisodes(rss) {
         episodes.value = allEpisodes.value;
         loaded.value = true;
     });
+}
+
+function playRow(row) {
+    if(audio.value.length === 0) {
+        play(row)
+        return
+    }
+    else {
+        var current_playing = audio.value[0]
+        if (current_playing.guid === row.guid) {
+            return
+        }
+    }
+    console.log("Playing", row)
+    play(row)
 }
 
 function play(episode) {
