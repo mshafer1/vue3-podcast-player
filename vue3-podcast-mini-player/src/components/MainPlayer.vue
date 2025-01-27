@@ -22,6 +22,8 @@
                 </div>
                 <div class="row">
                     <EasyDataTable buttons-pagination :headers="headers" :items="episodes" :hide-rows-per-page=true
+                        body-expand-row-class-name="expanded-row" :rows-per-page=10 table-class-name="customize-table" header-class-name="hide-headers"
+                        body-row-class-name="customize-rows" header-text-direction="center"
                         @click-row="playRow"
                         >
 
@@ -202,5 +204,9 @@ button.btn[aria-expanded="true"] {
 
 .customize-rows>td>div.margin {
     padding: 15px 5px;
+}
+
+thead.hide-headers {
+    display: none;
 }
 </style>
