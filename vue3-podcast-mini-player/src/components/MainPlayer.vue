@@ -22,10 +22,9 @@
                 </div>
                 <div class="row">
                     <EasyDataTable buttons-pagination :headers="headers" :items="episodes" :hide-rows-per-page=true
-                        body-expand-row-class-name="expanded-row" :rows-per-page=10 table-class-name="customize-table" header-class-name="hide-headers"
-                        body-row-class-name="customize-rows" header-text-direction="center"
-                        @click-row="playRow"
-                        >
+                        body-expand-row-class-name="expanded-row" :rows-per-page=10 table-class-name="customize-table"
+                        header-class-name="hide-headers" body-row-class-name="customize-rows"
+                        header-text-direction="center" @click-row="playRow">
 
                         <template #item-cover="{ cover }">
                             <img :src="cover" class="img-fluid" style="max-width: 80px;" />
@@ -130,7 +129,7 @@ function loadEpisodes(rss) {
 }
 
 function playRow(row) {
-    if(audio.value.length === 0) {
+    if (audio.value.length === 0) {
         play(row)
         return
     }
@@ -140,6 +139,7 @@ function playRow(row) {
             return
         }
     }
+
     console.log("Playing", row)
     play(row)
 }
