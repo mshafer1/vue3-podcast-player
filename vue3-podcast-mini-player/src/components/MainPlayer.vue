@@ -42,12 +42,6 @@
                             <span v-html="item.summary"></span>
                         </div>
                     </template>
-                    <!-- <template #item-info="item">
-                        <-- <div class="col-sm-2" v-html="item.infoButton()"></div> -- >
-                        <-- ... -- >
-                        <button type="button" class="btn btn-primary" :aria-expanded="item.expanded"
-                            @click="expand(item)">&gt;</button>
-                    </template> -->
                 </EasyDataTable>
             </div>
         </div>
@@ -96,26 +90,20 @@ const headers = ref([
 const searchText = ref("")
 
 function searchTriggered() {
-    console.log("searching for", searchText.value)
     if (searchText.value === "") {
         episodes.value = allEpisodes.value
         return
     }
     var search_result = fuzzyFilter(allEpisodes.value, searchText.value, {fields: ['name', 'summary']})
-    console.log("Result", search_result)
     episodes.value = search_result.map((ep) => ep.item)
 }
 
 const updateSearch = debounce(searchTriggered, 300)
 
 function loadEpisodes(rss) {
-    // console.log(rss.data)
     xml2js.parseString(rss.data, (err, result) => {
         parsedData.value = result;
-        // console.log("value", parsedData.value);
-        // console.log("feed", result.rss.feed)
         result.rss.channel[0].item.forEach((value) => {
-            console.log("item: ", value)
             var ep = new Episode(
                 value.title[0],
                 value['itunes:duration'][0],
@@ -157,7 +145,6 @@ onMounted(() => {
                 loadEpisodes(response)
             }
         })
-    // loadEpisodes();
 });
 </script>
 
@@ -169,7 +156,6 @@ html {
 }
 
 button.btn[aria-expanded="true"] {
-    /* transform: rotate(90deg); */
     writing-mode: vertical-rl;
 }
 
