@@ -192,6 +192,10 @@ button.btn[aria-expanded="true"] {
     --easy-table-body-row-font-size: 16pt;
     max-height: calc(90vh - 100px);
     overflow-y: scroll;
+    -webkit-user-select: none;
+    /* Safari */
+    user-select: none;
+    /* Standard syntax */
 }
 
 
@@ -205,6 +209,11 @@ button.btn[aria-expanded="true"] {
 .customize-rows {
     cursor: pointer;
 }
+
+.customize-rows:has(button.btn:disabled) {
+    opacity: .6;
+}
+
 
 .customize-rows>td>div.margin {
     padding: 15px 5px;
