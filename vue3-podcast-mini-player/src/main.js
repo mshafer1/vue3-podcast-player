@@ -6,4 +6,10 @@ import "bootstrap"
 import { createApp } from 'vue'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
+var app = createApp(App);
+
+app.component('EasyDataTable', Vue3EasyDataTable);
+
+app.mount('#app')

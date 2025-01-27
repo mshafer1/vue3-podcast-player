@@ -1,40 +1,49 @@
 <template>
     <div class="app-height">
-        <div class="row fixed-top">
-            <div class="col-md-1 d-none d-md-block">&nbsp;</div>
-            <div class="col-md-10 col-sm-12">
-                <APlayer :audio="audio" ref="aplayer" loop="false" />
-            </div>
-            <div class="col-md-1 d-none d-md-block">&nbsp;</div>
-        </div>
-        <div style="min-height: 100px;">
-
-        </div>
         <div class="container">
+            <div class="row fixed-top">
+                <div class="col-md-1 d-none d-md-block">&nbsp;</div>
+                <div class="col-md-10 col-sm-12">
+                    <APlayer :audio="audio" ref="aplayer" loop="false"  />
+                </div>
+                <div class="col-md-1 d-none d-md-block">&nbsp;</div>
+            </div>
+            <div style="min-height: 100px;">&nbsp;</div>
             <div class="row">
                 <div class="col-sm-12 text-center">{{ episodes.length }} episodes available</div>
             </div>
-            <div class="container border">
-                <template v-for="episode in episodes" :key="episode.name">
-                    <div class="row pb-1 mt-5">
-                        <div class="col-sm-1">
-                            <img :src="episode.cover" class="img-fluid" />
+            <div class="container" style="padding: 0px 0px;">
+                <EasyDataTable buttons-pagination :headers="headers" :items="episodes" hide-rows-per-page="true" body-expand-row-class-name="expanded-row"
+                    rows-per-page="10" table-class-name="customize-table" body-row-class-name="customize-rows" header-text-direction="center">
+
+                    <template #item-cover="{ cover }">
+                        <img :src="cover" class="img-fluid" style="max-width: 80px;" />
+                    </template>
+                    <template #item-name="item">
+                        <b>{{ item.name }}</b> <br />
+                        {{ item.pubDate }}
+                        <br v-if="item.expanded" />
+                        <span v-html="item.summary" v-if="item.expanded" style="padding-top: 1ex; padding-bottom: 2em;">
+                        </span>
+                    </template>
+                    <template #item-playButton="item">
+                        <div class="margin">
+                            <button class="btn btn-dark p-4 rounded-circle btn-md" :disabled="item.is_playing"
+                            @click="play(item)"><i class="bi" :class="item.icon"></i></button>
                         </div>
-                        <div class="col-sm-4">
-                            <b>{{ episode.name }}</b> <br />
-                            {{ episode.pubDate }}
+                    </template>
+                    <template #expand="item">
+                        <div>
+                            <span v-html="item.summary"></span>
                         </div>
-                        <div class="col-sm-3">
-                            {{ episode.length }}
-                        </div>
-                        <div class="col-sm-2">
-                            <button class="btn btn-dark p-4 rounded-circle btn-md" :disabled="episode.is_playing"
-                                @click="play(episode)"><i class="bi" :class="episode.icon"></i></button>
-                        </div>
-                        <div class="col-sm-2" v-html="episode.infoButton()"></div>
-                    </div>
-                    <div class="pb-3 border-bottom" v-html="episode.summaryCollapsable()"></div>
-                </template>
+                    </template>
+                    <!-- <template #item-info="item">
+                        <-- <div class="col-sm-2" v-html="item.infoButton()"></div> -- >
+                        <-- ... -- >
+                        <button type="button" class="btn btn-primary" :aria-expanded="item.expanded"
+                            @click="expand(item)">&gt;</button>
+                    </template> -->
+                </EasyDataTable>
             </div>
         </div>
     </div>
@@ -46,6 +55,7 @@ import { ref, onMounted } from "vue";
 import APlayer from "@worstone/vue-aplayer";
 import axios from "axios";
 import xml2js from "xml2js";
+// import { Header, Item } from "vue3-easy-data-table";
 
 class Episode {
     constructor(name, length, link, image, summary, pubDate, guid, author) {
@@ -57,25 +67,13 @@ class Episode {
         this.cover = image;
         this.pubDate = pubDate;
         this.guid = guid;
-        this.author=author;
-        
+        this.author = author;
+
         this.theme = '#41b883'
         this.is_playing = false;
-        // this.is_paused=false;
+        this.expanded = false;
     }
 
-    infoButton() {
-        return `<button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#descriptionCollapse-${this.guid}"
-                aria-expanded="false" aria-controls='descriptionCollapse-${this.guid}'>&gt;</button>`
-    }
-
-    summaryCollapsable() {
-        return `<div class="collapse multi-collapse" id="descriptionCollapse-${this.guid}">
-                    <div>
-                        ${this.summary}
-                    </div>
-                </div>`
-    }
 }
 
 const parsedData = ref(null);
@@ -83,6 +81,11 @@ const aplayer = ref(null);
 const audio = ref([]);
 const loaded = ref(false);
 const episodes = ref([]);
+const headers = ref([
+    { text: 'Episode', value: 'cover', width: 100 },
+    { text: 'Name', value: 'name' },
+    { text: '', value: 'playButton' },
+])
 
 function loadEpisodes(rss) {
     // console.log(rss.data)
@@ -108,12 +111,15 @@ function loadEpisodes(rss) {
     });
 }
 
+function expand(episode) {
+    episodes.value.forEach((ep) => { ep.expanded = ep.guid === episode.guid })
+}
+
 function play(episode) {
     console.log("Loading", episode.name)
 
-    episodes.value.forEach((ep) => { ep.is_playing = false })
+    episodes.value.forEach((ep) => { ep.is_playing = ep.guid === episode.guid })
 
-    episode.is_playing = true;
     aplayer.value.pause()
     aplayer.value.clearList();
 
@@ -138,13 +144,36 @@ onMounted(() => {
 </script>
 
 <style lang="css">
+
+html {
+    --easy-table-header-font-size: 20pt;
+    --easy-table-row-height: 100px;
+    --easy-table-row-font-size: 30pt;
+}
+
 button.btn[aria-expanded="true"] {
     /* transform: rotate(90deg); */
     writing-mode: vertical-rl;
 }
 
-.app-height {
-    max-height: 500px;
-    overflow-y: scroll;
+.aplayer {
+    height: 100px;
+}
+
+.customize-table {
+    --easy-table-header-font-size: 24pt;
+    --easy-table-row-height: 100px;
+    --easy-table-body-row-font-size: 16pt;
+}
+
+
+.expanded-row > .expand > div {
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+    padding: 5px 15px;
+}
+
+.customize-rows > td > div.margin {
+    padding: 15px 5px;
 }
 </style>
