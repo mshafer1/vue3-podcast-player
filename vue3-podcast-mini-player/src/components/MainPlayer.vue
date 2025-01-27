@@ -210,7 +210,7 @@ button.btn[aria-expanded="true"] {
     cursor: pointer;
 }
 
-.customize-rows:has(button.btn:disabled) {
+.customize-rows:has(button.btn:disabled) > td:not(.can-expand) {
     opacity: .6;
 }
 
