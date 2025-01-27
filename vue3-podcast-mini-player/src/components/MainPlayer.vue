@@ -18,7 +18,7 @@
                         v-model="searchText" />
                 </div>
                 <EasyDataTable buttons-pagination :headers="headers" :items="episodes" hide-rows-per-page="true"
-                    body-expand-row-class-name="expanded-row" rows-per-page="10" table-class-name="customize-table"
+                    body-expand-row-class-name="expanded-row" rows-per-page=10 table-class-name="customize-table"
                     body-row-class-name="customize-rows" header-text-direction="center">
 
                     <template #item-cover="{ cover }">
