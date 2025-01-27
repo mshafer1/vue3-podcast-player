@@ -170,7 +170,8 @@ button.btn[aria-expanded="true"] {
 .expanded-row > .expand > div {
     margin-top: 1em;
     margin-bottom: 1.5em;
-    padding: 5px 15px;
+    margin-left: 2em;
+    margin-right: 5em;
 }
 
 .customize-rows > td > div.margin {
