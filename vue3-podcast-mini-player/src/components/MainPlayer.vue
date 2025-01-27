@@ -1,16 +1,15 @@
 <template>
     <div class="app-height">
         <div class="container">
-            <div class="row fixed-top">
-                <div class="col-md-1 d-none d-md-block">&nbsp;</div>
-                <div class="col-md-10 col-sm-12">
-                    <APlayer :audio="audio" ref="aplayer" loop="false" />
-                </div>
-                <div class="col-md-1 d-none d-md-block">&nbsp;</div>
-            </div>
-            <div style="min-height: 100px;">&nbsp;</div>
 
-            <div class="container" style="padding: 0px 0px;">
+            <div class="container mt-1">
+                <div class="row border border-bottom-0">
+                    <!-- <div class="col-md-1 d-none d-md-block">&nbsp;</div> -->
+                    <div class="col-md-12 col-sm-12">
+                        <APlayer :audio="audio" ref="aplayer" loop="false" />
+                    </div>
+                    <!-- <div class="col-md-1 d-none d-md-block">&nbsp;</div> -->
+                </div>
                 <div class="row border border-bottom-0">
                     <div class="col-sm-12 text-center">
 
@@ -167,12 +166,15 @@ button.btn[aria-expanded="true"] {
 
 .aplayer {
     height: 100px;
+    box-shadow: none;
 }
 
 .customize-table {
     --easy-table-header-font-size: 24pt;
     --easy-table-row-height: 100px;
     --easy-table-body-row-font-size: 16pt;
+    max-height: calc(90vh - 100px);
+    overflow-y: scroll;
 }
 
 
