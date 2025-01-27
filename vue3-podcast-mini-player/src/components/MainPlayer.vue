@@ -4,7 +4,7 @@
             <div class="row fixed-top">
                 <div class="col-md-1 d-none d-md-block">&nbsp;</div>
                 <div class="col-md-10 col-sm-12">
-                    <APlayer :audio="audio" ref="aplayer" loop="false"  />
+                    <APlayer :audio="audio" ref="aplayer" loop="false" />
                 </div>
                 <div class="col-md-1 d-none d-md-block">&nbsp;</div>
             </div>
@@ -15,6 +15,9 @@
             <div class="container" style="padding: 0px 0px;">
                 <EasyDataTable buttons-pagination :headers="headers" :items="episodes" hide-rows-per-page="true" body-expand-row-class-name="expanded-row"
                     rows-per-page="10" table-class-name="customize-table" body-row-class-name="customize-rows" header-text-direction="center">
+                <EasyDataTable buttons-pagination :headers="headers" :items="episodes" hide-rows-per-page="true"
+                    body-expand-row-class-name="expanded-row" rows-per-page="10" table-class-name="customize-table"
+                    body-row-class-name="customize-rows" header-text-direction="center">
 
                     <template #item-cover="{ cover }">
                         <img :src="cover" class="img-fluid" style="max-width: 80px;" />
@@ -29,7 +32,7 @@
                     <template #item-playButton="item">
                         <div class="margin">
                             <button class="btn btn-dark p-4 rounded-circle btn-md" :disabled="item.is_playing"
-                            @click="play(item)"><i class="bi" :class="item.icon"></i></button>
+                                @click="play(item)"><i class="bi" :class="item.icon"></i></button>
                         </div>
                     </template>
                     <template #expand="item">
@@ -144,7 +147,6 @@ onMounted(() => {
 </script>
 
 <style lang="css">
-
 html {
     --easy-table-header-font-size: 20pt;
     --easy-table-row-height: 100px;
@@ -167,14 +169,14 @@ button.btn[aria-expanded="true"] {
 }
 
 
-.expanded-row > .expand > div {
+.expanded-row>.expand>div {
     margin-top: 1em;
     margin-bottom: 1.5em;
     margin-left: 2em;
     margin-right: 5em;
 }
 
-.customize-rows > td > div.margin {
+.customize-rows>td>div.margin {
     padding: 15px 5px;
 }
 </style>
