@@ -202,6 +202,10 @@ button.btn[aria-expanded="true"] {
     margin-right: 5em;
 }
 
+.customize-rows {
+    cursor: pointer;
+}
+
 .customize-rows>td>div.margin {
     padding: 15px 5px;
 }
