@@ -10,7 +10,7 @@
                     </div>
                     <!-- <div class="col-md-1 d-none d-md-block">&nbsp;</div> -->
                 </div>
-                <div class="row border border-bottom-0">
+                <div class="row border border-bottom-0" :hidden="!displaySearch">
                     <div class="col-sm-12 text-center">
 
                         <input type="search" class="form-control" placeholder="search..." @input="updateSearch"
@@ -106,6 +106,7 @@ const headers = ref([
 const searchText = ref("")
 const rss = ref(null);
 const message = ref("Loading episodes...")
+const displaySearch = ref(true)
 
 function searchTriggered() {
     if (searchText.value === "") {
@@ -176,6 +177,10 @@ onMounted(() => {
     } else {
         message.value = "No RSS feed provided. Pleas add ?rss=... to the URL to load episodes"
         return;
+    }
+
+    if (urlParams.has('hideSearch')) {
+        displaySearch.value = false
     }
     
     aplayer.value.addList(audios);
