@@ -22,16 +22,21 @@
                 </div>
                 <div class="row">
                     <EasyDataTable buttons-pagination :headers="headers" :items="episodes" :hide-rows-per-page=true
-                        body-expand-row-class-name="expanded-row" :rows-per-page="rowsPerPage" :key="rowsPerPage" table-class-name="customize-table"
-                        header-class-name="hide-headers" body-row-class-name="customize-rows"
-                        header-text-direction="center" @click-row="playRow" :style="{'height': 'calc(' + appHeight + ' - 200px)'}">
+                        body-expand-row-class-name="expanded-row" :rows-per-page="rowsPerPage" :key="rowsPerPage"
+                        table-class-name="customize-table" header-class-name="hide-headers"
+                        body-row-class-name="customize-rows" header-text-direction="center" @click-row="playRow"
+                        :style="{ 'height': 'calc(' + appHeight + ' - 200px)' }">
 
                         <template #item-cover="{ cover }">
-                            <img :src="cover" class="img-fluid" style="max-width: 80px;" />
+                            <span class="d-none d-sm-none d-md-inline"><img :src="cover" class="img-fluid"
+                                    style="max-width: 80px;" /></span>
+                            <span class="d-inline d-md-none"><img :src="cover" class="img-fluid"
+                                    style="max-width: 50px;" /></span>
                         </template>
                         <template #item-name="item">
                             <b>{{ item.name }}</b> &nbsp;- &nbsp;{{ item.length }} <br />
-                            <span class="d-none d-sm-none d-md-inline">{{ item.pubDate }}</span><span class="d-inline d-md-none">{{  item.shortPubDate }}</span>
+                            <span class="d-none d-sm-none d-md-inline">{{ item.pubDate }}</span><span
+                                class="d-inline d-md-none">{{ item.shortPubDate }}</span>
                             <br v-if="item.expanded" />
                             <span v-html="item.summary" v-if="item.expanded"
                                 style="padding-top: 1ex; padding-bottom: 2em;">
@@ -39,8 +44,14 @@
                         </template>
                         <template #item-playButton="item">
                             <div class="margin">
-                                <button class="btn btn-dark p-3 rounded-circle btn-md" :disabled="item.is_playing"
-                                    @click="play(item)"><i class="bi" :class="item.icon"></i></button>
+                                <span class="d-none d-sm-none d-md-inline"><button
+                                        class="btn btn-dark p-4 rounded-circle btn-md" :disabled="item.is_playing"
+                                        @click="play(item)"><i class="bi" :class="item.icon"></i></button>
+                                </span>
+                                <span class="d-inline d-md-none"><button class="btn btn-dark p-3 rounded-circle btn-md"
+                                        :disabled="item.is_playing" @click="play(item)"><i class="bi"
+                                            :class="item.icon"></i></button>
+                                </span>
                             </div>
                         </template>
                         <template #expand="item">
@@ -176,7 +187,7 @@ function play(episode) {
 onMounted(() => {
     let audios = [];
     let urlParams = new URLSearchParams(window.location.search);
-    
+
     if (urlParams.has('rss')) {
         rss.value = urlParams.get('rss')
     } else {
@@ -195,7 +206,7 @@ onMounted(() => {
     if (urlParams.has('pageSize')) {
         rowsPerPage.value = urlParams.get('pageSize')
     }
-    
+
     aplayer.value.addList(audios);
     axios.get(rss.value).catch((response) => { console.log("Error", response) })
         .catch((response) => { console.log("failure", response) })
@@ -244,7 +255,7 @@ button.btn[aria-expanded="true"] {
     cursor: pointer;
 }
 
-.customize-rows:has(button.btn:disabled) > td:not(.can-expand) {
+.customize-rows:has(button.btn:disabled)>td:not(.can-expand) {
     opacity: .6;
 }
 
