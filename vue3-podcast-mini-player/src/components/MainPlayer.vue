@@ -31,7 +31,7 @@
                         </template>
                         <template #item-name="item">
                             <b>{{ item.name }}</b> &nbsp;- &nbsp;{{ item.length }} <br />
-                            {{ item.pubDate }}
+                            <span class="d-none d-sm-none d-md-inline">{{ item.pubDate }}</span><span class="d-inline d-md-none">{{  item.shortPubDate }}</span>
                             <br v-if="item.expanded" />
                             <span v-html="item.summary" v-if="item.expanded"
                                 style="padding-top: 1ex; padding-bottom: 2em;">
@@ -72,6 +72,7 @@ import APlayer from "@worstone/vue-aplayer";
 import axios from "axios";
 import xml2js from "xml2js";
 import { fuzzyFilter } from "fuzzbunny";
+import dateFormat from "dateformat";
 
 class Episode {
     constructor(name, length, link, image, summary, pubDate, guid, author) {
@@ -81,7 +82,8 @@ class Episode {
         this.icon = "bi-play-fill";
         this.summary = summary;
         this.cover = image;
-        this.pubDate = pubDate;
+        this.pubDate = new Date(pubDate).toLocaleString();
+        this.shortPubDate = dateFormat(new Date(pubDate), "yyyy-mm-dd HH:MM");
         this.guid = guid;
         this.author = author;
         this.lrc = "";
