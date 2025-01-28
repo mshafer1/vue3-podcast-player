@@ -84,6 +84,7 @@ class Episode {
         this.pubDate = pubDate;
         this.guid = guid;
         this.author = author;
+        this.lrc = "";
 
         this.theme = '#41b883'
         this.is_playing = false;
