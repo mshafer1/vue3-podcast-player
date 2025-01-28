@@ -1,5 +1,5 @@
 <template>
-    <div class="app-height">
+    <div :height="appHeight">
         <div class="container" :hidden="!loaded">
 
             <div class="container mt-1">
@@ -24,7 +24,7 @@
                     <EasyDataTable buttons-pagination :headers="headers" :items="episodes" :hide-rows-per-page=true
                         body-expand-row-class-name="expanded-row" :rows-per-page=10 table-class-name="customize-table"
                         header-class-name="hide-headers" body-row-class-name="customize-rows"
-                        header-text-direction="center" @click-row="playRow">
+                        header-text-direction="center" @click-row="playRow" :style="{'height': 'calc(' + appHeight + ' - 200px)'}">
 
                         <template #item-cover="{ cover }">
                             <img :src="cover" class="img-fluid" style="max-width: 80px;" />
@@ -107,6 +107,7 @@ const searchText = ref("")
 const rss = ref(null);
 const message = ref("Loading episodes...")
 const displaySearch = ref(true)
+const appHeight = ref("95vh")
 
 function searchTriggered() {
     if (searchText.value === "") {
@@ -182,6 +183,10 @@ onMounted(() => {
     if (urlParams.has('hideSearch')) {
         displaySearch.value = false
     }
+
+    if (urlParams.has('height')) {
+        appHeight.value = urlParams.get('height')
+    }
     
     aplayer.value.addList(audios);
     axios.get(rss.value).catch((response) => { console.log("Error", response) })
@@ -214,7 +219,6 @@ button.btn[aria-expanded="true"] {
     --easy-table-header-font-size: 24pt;
     --easy-table-row-height: 100px;
     --easy-table-body-row-font-size: 16pt;
-    max-height: calc(90vh - 100px);
     overflow-y: scroll;
     -webkit-user-select: none;
     /* Safari */
