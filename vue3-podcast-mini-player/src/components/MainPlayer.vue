@@ -22,7 +22,7 @@
                 </div>
                 <div class="row">
                     <EasyDataTable buttons-pagination :headers="headers" :items="episodes" :hide-rows-per-page=true
-                        body-expand-row-class-name="expanded-row" :rows-per-page=10 table-class-name="customize-table"
+                        body-expand-row-class-name="expanded-row" :rows-per-page="rowsPerPage" :key="rowsPerPage" table-class-name="customize-table"
                         header-class-name="hide-headers" body-row-class-name="customize-rows"
                         header-text-direction="center" @click-row="playRow" :style="{'height': 'calc(' + appHeight + ' - 200px)'}">
 
@@ -108,6 +108,7 @@ const rss = ref(null);
 const message = ref("Loading episodes...")
 const displaySearch = ref(true)
 const appHeight = ref("95vh")
+const rowsPerPage = ref(5)
 
 function searchTriggered() {
     if (searchText.value === "") {
@@ -186,6 +187,10 @@ onMounted(() => {
 
     if (urlParams.has('height')) {
         appHeight.value = urlParams.get('height')
+    }
+
+    if (urlParams.has('pageSize')) {
+        rowsPerPage.value = urlParams.get('pageSize')
     }
     
     aplayer.value.addList(audios);
