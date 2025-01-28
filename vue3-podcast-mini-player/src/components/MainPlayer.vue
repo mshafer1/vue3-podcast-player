@@ -30,7 +30,7 @@
                             <img :src="cover" class="img-fluid" style="max-width: 80px;" />
                         </template>
                         <template #item-name="item">
-                            <b>{{ item.name }}</b> <br />
+                            <b>{{ item.name }}</b> &nbsp;- &nbsp;{{ item.length }} <br />
                             {{ item.pubDate }}
                             <br v-if="item.expanded" />
                             <span v-html="item.summary" v-if="item.expanded"
