@@ -1,6 +1,6 @@
 <template>
     <div class="app-height">
-        <div class="container">
+        <div class="container" :hidden="!loaded">
 
             <div class="container mt-1">
                 <div class="row border border-bottom-0">
@@ -52,6 +52,15 @@
                 </div>
             </div>
         </div>
+        <div class="container mt-5" :hidden="loaded">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <div class="text-primary" role="status">
+                        <span>{{ message }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -95,6 +104,8 @@ const headers = ref([
     { text: '', value: 'playButton' },
 ])
 const searchText = ref("")
+const rss = ref(null);
+const message = ref("Loading episodes...")
 
 function searchTriggered() {
     if (searchText.value === "") {
@@ -158,9 +169,17 @@ function play(episode) {
 
 onMounted(() => {
     let audios = [];
+    let urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.has('rss')) {
+        rss.value = urlParams.get('rss')
+    } else {
+        message.value = "No RSS feed provided. Pleas add ?rss=... to the URL to load episodes"
+        return;
+    }
+    
     aplayer.value.addList(audios);
-
-    axios.get("https://anchor.fm/s/d5a0c50/podcast/rss", { "count": 5 }).catch((response) => { console.log("Error", response) })
+    axios.get(rss.value).catch((response) => { console.log("Error", response) })
         .catch((response) => { console.log("failure", response) })
         .then((response) => {
             if (typeof (response) !== "undefined") {
