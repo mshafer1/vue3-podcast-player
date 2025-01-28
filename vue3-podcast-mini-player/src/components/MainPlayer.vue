@@ -39,7 +39,7 @@
                         </template>
                         <template #item-playButton="item">
                             <div class="margin">
-                                <button class="btn btn-dark p-4 rounded-circle btn-md" :disabled="item.is_playing"
+                                <button class="btn btn-dark p-3 rounded-circle btn-md" :disabled="item.is_playing"
                                     @click="play(item)"><i class="bi" :class="item.icon"></i></button>
                             </div>
                         </template>
@@ -207,9 +207,7 @@ onMounted(() => {
 
 <style lang="css">
 html {
-    --easy-table-header-font-size: 20pt;
     --easy-table-row-height: 100px;
-    --easy-table-row-font-size: 30pt;
 }
 
 button.btn[aria-expanded="true"] {
@@ -222,9 +220,9 @@ button.btn[aria-expanded="true"] {
 }
 
 .customize-table {
-    --easy-table-header-font-size: 24pt;
+    --easy-table-header-font-size: 16pt;
     --easy-table-row-height: 100px;
-    --easy-table-body-row-font-size: 16pt;
+    --easy-table-body-row-font-size: 14pt;
     overflow-y: scroll;
     -webkit-user-select: none;
     /* Safari */
